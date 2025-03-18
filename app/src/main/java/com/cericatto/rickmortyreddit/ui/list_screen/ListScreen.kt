@@ -152,14 +152,8 @@ private fun OneColumnGrid(
 			.background(backgroundColor()),
 		horizontalAlignment = Alignment.CenterHorizontally,
 	) {
-		/*
-		items(state.characters) { item ->
-			CharacterListItem(item = item)
-		}
-		 */
-
 		itemsIndexed(state.characters) { index, item ->
-			// Trigger loading when 5 items from bottom are visible
+			// Trigger loading when 5 items from bottom are visible.
 			if (index == state.characters.size - 5 &&
 				!state.isLoadingMore && !state.hasReachedEnd
 			) {
@@ -189,17 +183,6 @@ private fun OneColumnGrid(
 				}
 			}
 		}
-
-		/*
-		// Trigger loading more when reaching the end.
-		if (!state.hasReachedEnd && !state.isLoadingMore && state.characters.isNotEmpty()) {
-			item {
-				LaunchedEffect(Unit) {
-					onAction(MainScreenAction.LoadMore)
-				}
-			}
-		}
-		 */
 	}
 }
 
@@ -214,7 +197,7 @@ private fun TwoColumnGrid(
 		state = gridState,
 		content = {
 			itemsIndexed(state.characters) { index, item ->
-				// Trigger loading when 5 items from bottom are visible
+				// Trigger loading when 5 items from bottom are visible.
 				if (index == state.characters.size - 5 &&
 					!state.isLoadingMore && !state.hasReachedEnd
 				) {

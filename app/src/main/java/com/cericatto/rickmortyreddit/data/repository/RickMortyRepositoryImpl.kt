@@ -1,5 +1,7 @@
 package com.cericatto.rickmortyreddit.data.repository
 
+import com.cericatto.rickmortyreddit.data.local.entity.RedditDao
+import com.cericatto.rickmortyreddit.data.mappers.toRedditEntity
 import com.cericatto.rickmortyreddit.data.model.RickMortyCharacter
 import com.cericatto.rickmortyreddit.data.remote.RickMortyApi
 import com.cericatto.rickmortyreddit.domain.errors.DataError
@@ -10,29 +12,24 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class RickMortyRepositoryImpl(
-//	private val appScope: CoroutineScope,
-//	private val dao: RickMortyDao,
+	private val dao: RedditDao,
 	private val api: RickMortyApi,
 ) : RickMortyRepository {
 
-	/*
-	override suspend fun fetchCharacters(): Result<List<Character>, DataError> {
-		return try {
-			val list = api.fetchCharacters()
-			Result.Success(data = list.results)
-		} catch (e: HttpException) {
-			checkHttpException(e.code())
-		} catch (e: IOException) {
-			// Likely no internet or server not reachable.
-			Result.Error(DataError.Network.NO_INTERNET)
-		}
-	}
-	 */
-
+	// TODO Deal with pagination later.
 	override suspend fun fetchCharacters(page: Int): Result<List<RickMortyCharacter>, DataError> {
 		return try {
 			val response = api.fetchCharacters(page)
-			Result.Success(data = response.results)
+			if (response.results.isNotEmpty()) {
+				dao.upsertAllItems(
+					items = response.results.map {
+						it.toRedditEntity()
+					}
+				)
+				Result.Success(data = response.results)
+			} else {
+				Result.Success(data = emptyList())
+			}
 		} catch (e: HttpException) {
 			checkHttpException(e.code())
 		} catch (e: IOException) {

@@ -62,18 +62,16 @@ fun DynamicStatusBarColor() {
 	val statusBarColor = if (isDarkTheme) Color.DarkGray else Color.LightGray.copy(alpha = 0.5f)
 
 	LaunchedEffect(isDarkTheme) {
-		// Enable edge-to-edge mode (recommended for modern Android)
 		WindowCompat.setDecorFitsSystemWindows(window, false)
-
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-			// Android 15+: Draw background behind status bar using WindowInsets
+			// Android 15+: Draw background behind status bar using WindowInsets.
 			window.decorView.setBackgroundColor(statusBarColor.toArgb())
 			WindowCompat.getInsetsController(window, window.decorView).apply {
-				// Control icon appearance
+				// Control icon appearance.
 				isAppearanceLightStatusBars = !isDarkTheme
 			}
 		} else {
-			// Android 14 and below: Use the legacy approach
+			// Android 14 and below: Use the legacy approach.
 			window.statusBarColor = statusBarColor.toArgb()
 			WindowCompat.getInsetsController(window, window.decorView).apply {
 				isAppearanceLightStatusBars = !isDarkTheme

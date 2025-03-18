@@ -2,6 +2,8 @@ package com.cericatto.rickmortyreddit.data.di
 
 import android.app.Application
 import android.content.Context
+import androidx.room.Room
+import com.cericatto.rickmortyreddit.data.local.entity.RedditDatabase
 import com.cericatto.rickmortyreddit.data.remote.RickMortyApi
 import com.cericatto.rickmortyreddit.data.remote.RickMortyApi.Companion.BASE_URL
 import com.cericatto.rickmortyreddit.data.repository.RickMortyRepositoryImpl
@@ -65,24 +67,24 @@ object DataModule {
 	@Provides
 	@Singleton
 	fun provideRepository(
+		db: RedditDatabase,
 		api: RickMortyApi
 	): RickMortyRepository {
 		return RickMortyRepositoryImpl(
+			dao = db.dao,
 			api = api
 		)
 	}
 
-	/*
 	@Provides
 	@Singleton
-	fun provideRickMortyDatabase(app: Application): RickMortyDatabase {
+	fun provideRickMortyDatabase(app: Application): RedditDatabase {
 		return Room.databaseBuilder(
 			app,
-			RickMortyDatabase::class.java,
-			"rick_morty_db"
+			RedditDatabase::class.java,
+			"reddit_db"
 		).build()
 	}
-	 */
 
 	@Provides
 	@Singleton

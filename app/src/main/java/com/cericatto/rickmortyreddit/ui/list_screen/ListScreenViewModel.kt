@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListScreenViewModel @Inject constructor(
-	private val rickMortyRepository: RickMortyRepository,
+	private val rickMortyRepository: RickMortyRepository
 ): ViewModel() {
 
 	private val _state = MutableStateFlow(ListScreenState())
